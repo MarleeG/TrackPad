@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 const log = console.log;
 
 // class based component
 // Will allow you to create a new target
 class AddTarget extends Component {
     state = {
-        modal_form: false
+        modal_form: false,
+        status_options: ['researching', 'pending approval', 'approved', 'declined']
     }
 
     handleClick = (e) => {
         e.preventDefault();
         log('adding target...');
-        
+
         this.setState({
             modal_form: true
         })
@@ -22,7 +23,7 @@ class AddTarget extends Component {
         let hideModal = () => this.setState({ modal_form: false });
 
         return (
-            <div className='float-left mt-3'>
+            <div className='float-left mt-3' id='addTargetContainer'>
                 {/* Add a new target button */}
                 <Button variant="dark" size="lg" onClick={(e) => this.handleClick(e)}>
                     <i className='plus icon'></i>
@@ -34,14 +35,27 @@ class AddTarget extends Component {
                     size="lg"
                     show={this.state.modal_form}
                     onHide={hideModal}
-                    aria-labelledby="example-modal-sizes-title-lg"
+                    aria-labelledby="addTargetContainer"
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="example-modal-sizes-title-lg">
-                            Large Modal
+                            Enter a target
                     </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>...</Modal.Body>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Row>
+                                    <Form.Label>Status
+                                        <br />
+                                        {this.state.status_options.map(option => {
+                                            return (
+                                                    <Form.Check inline custom label={option} type='checkbox' id={option} key={option}/>
+                                            );
+                                        })}
+                                    </Form.Label>
+                            </Form.Row>
+                        </Form>
+                    </Modal.Body>
                 </Modal>
             </div>
         );
