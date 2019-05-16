@@ -10,7 +10,22 @@ import AppModal from './Components/app_modal';
 // React Component
 class App extends Component {
     state = {
-        showAppModal: false
+        showAppModal: false,
+        all_companies: [],
+        company_data: {
+            status: '',
+            company_details: {
+                name: '',
+                website: '',
+                industry: '',
+                number: ''
+            }
+        }
+    }
+
+    // Complete this function to add company data to this.state.company_data
+    addCompany = (status, company_details) => {
+
     }
 
     toggleAppModal = () => {
