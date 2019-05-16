@@ -14,8 +14,11 @@ class AddTarget extends Component {
             { status: 'pending', checked: false },
             { status: 'approved', checked: false },
             { status: 'declined', checked: false }
-        ]
-
+        ],
+        name: '',
+        website: '',
+        industry: '',
+        number: ''
     }
 
     handleClick = (e) => {
@@ -62,7 +65,7 @@ class AddTarget extends Component {
         this.setState({
             status_option_selected: selected_value
         }, () => this.updateStatusChecked(selected_value));
-        
+
 
         // May remove this.. unneeded at the momment
         const { checked } = e.target;
@@ -71,6 +74,16 @@ class AddTarget extends Component {
         log(selected_value);
         log(`----`);
     }
+
+    // Handles input change
+    handleChange = (e) => {
+        const { name, value } = e.target;
+
+        this.setState({
+            [name]: value
+        }, () => log(`${name}: ${value}`));
+    }
+
 
     render() {
         let hideModal = () => this.setState({ modal_form: false });
@@ -85,6 +98,7 @@ class AddTarget extends Component {
 
                 {/* {this.props.children()} */}
 
+                {/* Modal */}
                 <Modal
                     size="lg"
                     show={this.state.modal_form}
@@ -100,8 +114,8 @@ class AddTarget extends Component {
                         {/* Form */}
                         <Form>
                             <Form.Row>
-                                <Form.Label>Status
-                                    <br />
+                                <Form.Label>
+                                    <h4>Status</h4>
                                     {this.state.status_options.map((option, index) => {
                                         return (
                                             <Form.Check
@@ -117,6 +131,61 @@ class AddTarget extends Component {
                                         );
                                     })}
                                 </Form.Label>
+                            </Form.Row>
+
+                            <h4>Company Details</h4>
+                            <Form.Row className='mt-4'>
+                                {/* Company Name Input*/}
+
+                                <Form.Group as={Col} controlId="formCompanyName">
+                                    <Form.Label>Company Name</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="ABC Industries"
+                                        name='name'
+                                        value={this.state.name}
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Form.Group>
+
+                                {/* Company Industry Input*/}
+                                <Form.Group as={Col} controlId="formIndustry">
+                                    <Form.Label>Industry</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Oil Mining"
+                                        name='industry'
+                                        value={this.state.industry}
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Form.Group>
+                            </Form.Row>
+
+                            <Form.Row>
+                                {/* Company website input*/}
+                                <Form.Group as={Col} controlId="formCompanyName">
+                                    <Form.Label>Website</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="https://abcmining.com"
+                                        name='website'
+                                        value={this.state.website}
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Form.Group>
+
+
+                                {/* Company phone number input */}
+                                <Form.Group as={Col} controlId="formIndustry">
+                                    <Form.Label>Phone Number</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="800-645-6463"
+                                        name='number'
+                                        value={this.state.number}
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Form.Group>
                             </Form.Row>
                         </Form>
                     </Modal.Body>
