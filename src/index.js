@@ -1,16 +1,32 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Container, Row, Col} from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 // Components
 import Header from './Components/header';
 import AddTarget from './Components/add_target';
+import AppModal from './Components/app_modal';
 
 // React Component
-class App extends Component{
+class App extends Component {
+    state = {
+        showAppModal: false
+    }
 
-    render(){
-        return(
+    toggleAppModal = () => {
+        if(this.state.showAppModal){
+            this.setState({
+                showAppModal: false
+            });
+        }else{
+            this.setState({
+                showAppModal: true
+            });
+        }
+    }
+
+    render() {
+        return (
             <div>
                 <Container>
                     {/* Header Component displays here*/}
@@ -19,15 +35,19 @@ class App extends Component{
                             <Header />
                         </Col>
                     </Row>
-                     
+
                     {/*AddTarget Component displays here  */}
                     <Row>
                         <Col>
-                            <AddTarget/>
+                            {/* <AddTarget showAppModal={this.state.showAppModal} toggleAppModal={() => this.toggleAppModal()}>
+                                <AppModal />
+                            </AddTarget> */}
+
+                            <AddTarget />
                         </Col>
                     </Row>
                 </Container>
-            </div>
+            </div >
         )
     }
 }
