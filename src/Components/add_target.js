@@ -5,10 +5,10 @@ import {
     Modal,
     Form,
     Col,
+    Row,
     DropdownButton,
     Dropdown
 } from 'react-bootstrap';
-
 
 const log = console.log;
 
@@ -16,218 +16,163 @@ const log = console.log;
 // Will allow you to create a new target
 class AddTarget extends Component {
     state = {
-        status_option_checked: false,
-        status_option_selected: '',
-        status_options: [
-            { status: 'researching', checked: false },
-            { status: 'pending', checked: false },
-            { status: 'approved', checked: false },
-            { status: 'declined', checked: false }
-        ],
-        name: '',
-        website: '',
-        industry: '',
-        number: '',
-        key_name: '',
-        key_number: '',
-        key_role: '',
-        company_percentage: '',
-        company_performance: '',
-        dropdown_selection: '',
-        alert_message: '',
-        show_alert_message: false,
+        // status_option_checked: this.props.status_option_checked,
+        // status_option_selected: this.props.status_option_selected,
+        // status_options: this.props.status_options,
+        // name: this.props.name,
+        // website: this.props.website,
+        // industry: this.props.industry,
+        // number: this.props.number,
+        // key_name: this.props.key_name,
+        // key_number: this.props.key_number,
+        // key_role: this.props.role,
+        // company_percentage: this.props.company_percentage,
+        // company_performance: this.props.company_performance,
+        // dropdown_selection: this.props.dropdown_selection,
 
-        Key_Contact_List: [],
+
+        // alert_message: '',
+        // show_alert_message: false,
+
+        // Key_Contact_List: [],
+        show: true
     }
 
     handleClick = (e) => {
         this.props.toggleAppModal(true);
     }
 
-     // This will update the status radio options
-    updateStatusChecked = (selected_value) => {
-        // assign the status_options_copy in order to make changes to this.state.status_options
-        let status_options_copy = this.state.status_options;
-
-        // Loop through status_options_copy
-        status_options_copy.forEach(option => {
-            // if the status matches the selected value then assign checked as true
-            if (option.status === selected_value) {
-                option.checked = true;
-            } else {
-                option.checked = false;
-            }
-        });
-
-        // New value of status_options set
-        this.setState({ status_options: status_options_copy })
-    }
-
-    // This will only allow one radion option to be selected
-    checkItem = (e, index) => {
-        let selected_value = this.state.status_options[index].status;
-
-        // If all have a checked status of false then update status_option_checked to true
-        // confirms if one status option has been checked
-        this.state.status_options.forEach(option => {
-            if (!option.checked) {
-                this.setState({
-                    status_option_checked: true
-                });
-            }
-        });
-
-        // May remove as the selected value can found when looping over 
-        // this.state.status_options to check which option has been checked as true
-        this.setState({
-            status_option_selected: selected_value
-        }, () => this.updateStatusChecked(selected_value));
-
-    }
-
     // Handles input change
     handleChange = (e) => {
         const { name, value } = e.target;
-        // log(name)
-        // log(value)
 
         this.setState({
             [name]: value
         });
-    }
 
-    // Updates dropdown menu selecttion
-    handleSelect = (e) => {
-        if (this.state.dropdown_selection === 'company_performance') {
-            this.setState({
-                company_performance: e
-            });
-        } else {
-            this.setState({
-                company_percentage: e
-            });
-        }
-    }
 
-    // This will update which dropdown was selected to allow handleSelect to update the selected value for each drop down
-    handleSelectClick = (x) => {
-        this.setState({
-            dropdown_selection: x
-        });
     }
 
     // This add the target you entered and display if at least one field is filled
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const {
-            name,
-            website,
-            industry,
-            number,
-            key_name,
-            key_number,
-            key_role,
-            company_percentage,
-            company_performance,
-            status_option_selected
-        } = this.state;
+        if (this.props.submitText === 'Add') {
 
-        // 
-        const target_data = [
-            name,
-            website,
-            industry,
-            number,
-            key_name,
-            key_number,
-            key_role,
-            company_percentage,
-            company_performance,
-            status_option_selected
-        ];
 
-        // counts how much data 
-        let data_filled_counter = 0;
-        
-        target_data.forEach((data, i) => {
-            if (data !== '') {
-                // if we have at least one form of data with a value increase counter by 1
-                data_filled_counter++;
 
-                
-            }
-            // if we are at the final loop and we have at least one form of data filled
+            const {
+                name,
+                website,
+                industry,
+                number,
+                key_name,
+                key_number,
+                key_role,
+                company_percentage,
+                company_performance,
+                status_option_selected
+            } = this.props;
 
-            if (i === 9 && data_filled_counter !== 0) {
+            // 
+            const target_data = [
+                name,
+                website,
+                industry,
+                number,
+                key_name,
+                key_number,
+                key_role,
+                company_percentage,
+                company_performance,
+                status_option_selected
+            ];
 
-                // If company percentage and performance are both empty strings
-                // or they're not empty strings then you can send data
-                // cannot submit data if values of percentage and performance are empty strings 
-                // or they both have values
-                if ((company_percentage === '' && company_performance === '') || (company_performance !== '' && company_percentage !== '')) {
+            // counts how much data 
+            let data_filled_counter = 0;
 
-                    // this will send the data submited to the parent component index.js
-                    this.props.addCompany({
-                        company_details: {
-                            name: name,
-                            website: website,
-                            industry: industry,
-                            number: number
-                        },
-                        key_contact: {
-                            key_role: key_role,
-                            key_name: key_name,
-                            key_number: key_number
-                        },
-                        performance: {
-                            percentage: company_percentage,
-                            performance: company_performance
-                        },
-                        status: status_option_selected
-                    });
+            target_data.forEach((data, i) => {
+                if (data !== '') {
+                    // if we have at least one form of data with a value increase counter by 1
+                    data_filled_counter++;
 
-                    let default_status_options = this.state.status_options;
 
-                    default_status_options.forEach((option) => {
-                        option.checked = false
-                    });
-            
-                    this.props.toggleAppModal(false);
-                    this.setState({
-                        name: '',
-                        website: '',
-                        industry: '',
-                        number: '',
-                        key_name: '',
-                        key_number: '',
-                        key_role: '',
-                        company_percentage: '',
-                        company_performance: '',
-                        dropdown_selection: '',
-                        alert_message: '',
-                        show_alert_message: false,
-                        status_option_checked: false,
-                        status_option_selected: '',
-                        status_options: default_status_options
-                    });
                 }
-                // create an else state that handles if performance and percentage are different
-                // example performance is a string and percentage is not
-            }
-        });
+                // if we are at the final loop and we have at least one form of data filled
 
-        if (data_filled_counter === 0) {
-            this.setState({
-                show_alert_message: true,
-                alert_message: 'Please enter a value for atleast one field'
-            })
+                if (i === 9 && data_filled_counter !== 0) {
+
+                    // If company percentage and performance are both empty strings
+                    // or they're not empty strings then you can send data
+                    // cannot submit data if values of percentage and performance are empty strings 
+                    // or they both have values
+                    if ((company_percentage === '' && company_performance === '') || (company_performance !== '' && company_percentage !== '')) {
+
+                        // this will send the data submited to the parent component index.js
+                        this.props.addCompany({
+                            company_details: {
+                                name: name,
+                                website: website,
+                                industry: industry,
+                                number: number
+                            },
+                            key_contact: {
+                                key_role: key_role,
+                                key_name: key_name,
+                                key_number: key_number
+                            },
+                            performance: {
+                                percentage: company_percentage,
+                                performance: company_performance
+                            },
+                            status: status_option_selected
+                        });
+
+                        let default_status_options = this.props.status_options;
+
+                        default_status_options.forEach((option) => {
+                            option.checked = false
+                        });
+
+                        this.props.toggleAppModal(false);
+
+                        // Create a function on index.js that defaults to original form values
+                        this.setState({
+                            name: '',
+                            website: '',
+                            industry: '',
+                            number: '',
+                            key_name: '',
+                            key_number: '',
+                            key_role: '',
+                            company_percentage: '',
+                            company_performance: '',
+                            dropdown_selection: '',
+                            alert_message: '',
+                            show_alert_message: false,
+                            status_option_checked: false,
+                            status_option_selected: '',
+                            status_options: default_status_options
+                        });
+                    }
+                    // create an else state that handles if performance and percentage are different
+                    // example performance is a string and percentage is not
+                }
+            });
+
+            if (data_filled_counter === 0) {
+                this.props.updateAlertMessage(true, 'Please enter a value for atleast one field')
+            }
+
         }
     }
 
 
     render() {
         let hideModal = () => this.props.toggleAppModal(false);
+        // const { show } = this.state;
+        // const handleShow = () => this.setState({ show: true });
+        // const handleClose = () => this.setState({ show: false });
 
         return (
             <div className='float-left mt-3' id='addTargetContainer'>
@@ -237,6 +182,22 @@ class AddTarget extends Component {
                     Create new target
                 </Button>
 
+                {/* <Row>
+                    <Col xs={6}>
+                        <Toast onClose={handleClose} show={show} delay={3000} autohide>
+                            <Toast.Header>
+                                <strong className="mr-auto">Track Pad</strong>
+                                <small>{Date().getHours()}: {Date().getMinutes()}</small>
+                            </Toast.Header>
+                            <Toast.Body>
+                                Woohoo, you're reading this text in a Toast!
+                            </Toast.Body>
+                        </Toast>
+                    </Col>
+                    <Col xs={6}>
+                        <Button onClick={handleShow}>Show Toast</Button>
+                    </Col>
+                </Row> */}
 
                 {/* Form Modal */}
                 <Modal
@@ -254,11 +215,13 @@ class AddTarget extends Component {
                         {/* Form */}
                         <Form onSubmit={(e) => this.handleSubmit(e)}>
                             {/* Alert Message */}
-                            {this.state.show_alert_message &&
+                            {this.props.show_alert_message &&
                                 <Form.Row>
-                                    <Alert variant='danger'>
-                                        {this.state.alert_message}
-                                    </Alert>
+                                    <Form.Group as={Col} controlId="formAlertMessage">
+                                        <Alert variant='danger' className='text-center'>
+                                            {this.props.alert_message}
+                                        </Alert>
+                                    </Form.Group>
                                 </Form.Row>
                             }
 
@@ -266,7 +229,7 @@ class AddTarget extends Component {
                             <Form.Row>
                                 <Form.Label>
                                     <h4>Status</h4>
-                                    {this.state.status_options.map((option, index) => {
+                                    {this.props.status_options.map((option, idx) => {
                                         return (
                                             <Form.Check
                                                 inline
@@ -276,7 +239,7 @@ class AddTarget extends Component {
                                                 type='radio'
                                                 checked={option.checked}
                                                 key={option.status}
-                                                onChange={(e) => this.checkItem(e, index)}
+                                                onChange={(e) => this.props.checkItem(e, idx)}
                                                 className='mr-4'
                                             />
                                         );
@@ -295,8 +258,8 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="ABC Industries"
                                         name='name'
-                                        value={this.state.name}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.name}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
 
@@ -307,8 +270,8 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="Oil Mining"
                                         name='industry'
-                                        value={this.state.industry}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.industry}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
                             </Form.Row>
@@ -321,8 +284,8 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="https://abcmining.com"
                                         name='website'
-                                        value={this.state.website}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.website}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
 
@@ -334,13 +297,13 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="800-645-6463"
                                         name='number'
-                                        value={this.state.number}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.number}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
                             </Form.Row>
 
-                            <h4>Key Contacts</h4>
+                            <h4>Key Contact</h4>
                             <Form.Row>
                                 {/* Key Contact Role*/}
                                 <Form.Group as={Col} controlId="formContactKeyRole">
@@ -349,8 +312,8 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="Financial Advisor"
                                         name='key_role'
-                                        value={this.state.key_role}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.key_role}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
 
@@ -362,8 +325,8 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="Billy Jean"
                                         name='key_name'
-                                        value={this.state.key_name}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.key_name}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
 
@@ -374,8 +337,8 @@ class AddTarget extends Component {
                                         type="text"
                                         placeholder="770-475-5853"
                                         name='key_number'
-                                        value={this.state.key_number}
-                                        onChange={(e) => this.handleChange(e)}
+                                        value={this.props.keyNumber}
+                                        onChange={(e) => this.props.handleChange(e)}
                                     />
                                 </Form.Group>
                             </Form.Row>
@@ -387,9 +350,9 @@ class AddTarget extends Component {
                                     <DropdownButton
                                         drop='down'
                                         variant="dark"
-                                        title={this.state.company_performance === '' ? 'Business Performance' : this.state.company_performance}
+                                        title={this.props.company_performance === '' ? 'Business Performance' : this.props.company_performance}
                                         className='float-right'
-                                        onClick={() => this.handleSelectClick('company_performance')}
+                                        onClick={() => this.props.handleSelectClick('company_performance')}
                                     >
 
 
@@ -399,7 +362,7 @@ class AddTarget extends Component {
                                                     eventKey={performance}
                                                     key={i}
                                                     name='company_performance'
-                                                    onSelect={(e) => this.handleSelect(e)}
+                                                    onSelect={(e) => this.props.handleSelect(e)}
                                                     ref={e => this.dropdown_company_performance = e}
                                                 >
                                                     {performance}
@@ -416,8 +379,8 @@ class AddTarget extends Component {
                                     <DropdownButton
                                         drop='down'
                                         variant="dark"
-                                        title={this.state.company_percentage === '' ? 'Select a percenatge' : this.state.company_percentage}
-                                        onClick={() => this.handleSelectClick('company_percentage')}
+                                        title={this.props.company_percentage === '' ? 'Select a percenatge' : this.props.company_percentage}
+                                        onClick={() => this.props.handleSelectClick('company_percentage')}
 
                                     >
                                         {/* Company Performance */}
@@ -427,7 +390,7 @@ class AddTarget extends Component {
                                                 <Dropdown.Item
                                                     eventKey={percentage}
                                                     name='company_percentage'
-                                                    onSelect={(e) => this.handleSelect(e)}
+                                                    onSelect={(e) => this.props.handleSelect(e)}
                                                     key={i}
                                                     ref={e => this.dropdown_company_percentage = e}
                                                 >
@@ -444,7 +407,12 @@ class AddTarget extends Component {
 
 
                             <Modal.Footer>
-                                <Button variant="dark" type='submit'>Add</Button>
+
+
+                                {this.props.submitText === 'Add' ?
+                                    <Button variant="dark" type='submit'>Add</Button>
+                                    : <Button variant="dark" onClick={() => this.props.handleTargetUpdate()} type='submit'>Update</Button>
+                                }
                             </Modal.Footer>
 
 
