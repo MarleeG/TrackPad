@@ -170,9 +170,6 @@ class AddTarget extends Component {
 
     render() {
         let hideModal = () => this.props.toggleAppModal(false);
-        // const { show } = this.state;
-        // const handleShow = () => this.setState({ show: true });
-        // const handleClose = () => this.setState({ show: false });
 
         return (
             <div className='float-left mt-3' id='addTargetContainer'>
