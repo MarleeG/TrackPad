@@ -1,54 +1,90 @@
-import React, { Component } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import React from 'react';
+import { ListGroup, Container, Row, Col } from 'react-bootstrap';
 
 const log = console.log;
-class DisplayTarget extends Component {
-    state = {
-        targets: this.props.targets
+
+
+const DisplayTarget = (props) => {
+    function handleDelete(index) {
+        props.handleDelete(index)
     }
-    // componentDidMount = () => {
 
-    //     if (this.props.targets.length > 0) {
-    //         log(this.props.targets)
-    //     }
+    return (
+        <div className='mx-auto mt-5'>
+            <ListGroup as="ul">
+                {props.targets.length > 0
+                    ? props.targets.map((target, idx) => {
+                        let { company_details:
+                            {
+                                name,
+                                industry,
+                                number,
+                                website
+                            },
+                            key_contact: {
+                                key_role,
+                                key_name,
+                                key_number
+                            },
+                            performance: {
+                                percentage,
+                                performance
+                            },
+                            status
+                        } = target;
+                        return (
+                            <ListGroup.Item as="li" action key={idx}>
+                                <Container>
+                                    <Row>
+                                        <Col lg={3}>
+                                            <h3>Company Details</h3>
+                                            <h5>Name: {name}</h5>
+                                            <h5>Industry: {industry}</h5>
+                                            <h5>Number: {number}</h5>
+                                            <h5>Website: {website}</h5>
+                                        </Col>
+                                        <Col lg={3}>
+                                            <h3>Key Contact</h3>
+                                            <h5>Role: {key_role}</h5>
+                                            <h5>Name: {key_name}</h5>
+                                            <h5>Number: {key_number}</h5>
+                                        </Col>
+                                        <Col lg={3}>
+                                            <h3>Performance</h3>
+                                            <h5>{performance === 'Up'? 
+                                                    <i className="long arrow alternate up icon large"></i> 
+                                                    :<i className="long arrow alternate down icon large"></i>} by {percentage}</h5>
+                                        </Col>
+                                        <Col lg={2}>
+                                            <h3>Status</h3>
+                                            <h5>Status: {status}</h5>
+                                        </Col>
 
-    //     log(this.props.targets)
-
-
-    // }
-
-    // showProps = (prop) => {
-    //     log(prop)
-    // }
-
-
+                                        {/* Edit and Delete Buttons */}
+                                        <Col lg={1}>
+                                            <i className="trash icon large mr-1" onClick={(idk) => handleDelete(idx)}></i>
+                                            <i className="edit icon large"></i>
+                                        </Col>
+                                    </Row>
+                                </Container>
 
 
 
-
-
-    render() {
-        return (
-            <div className='mx-auto mt-5'>
-                <h4 className='text-center'>Display Targets Here</h4>
-
-                <ListGroup as="ul">
-                    {this.state.targets.length > 0
-                     ? this.state.targets.map((target, i) => {
-                         return(
-                            <ListGroup.Item as="li" active key={i}>
-                                target.status
+                                {/* {name ? <div>
+                                    
+                                    
+                                </div>: } */}
                             </ListGroup.Item>
-                         )
-                         
-                     }) : null}
-                    
+                        )
+                    }) :
+                    null
+                }
 
 
-                </ListGroup>
-            </div>
-        )
-    }
+
+            </ListGroup>
+        </div>
+    )
 }
 
 export default DisplayTarget;

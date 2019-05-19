@@ -7,8 +7,7 @@ import {
     Col,
     DropdownButton,
     Dropdown
-}
-    from 'react-bootstrap';
+} from 'react-bootstrap';
 
 
 const log = console.log;
@@ -17,7 +16,6 @@ const log = console.log;
 // Will allow you to create a new target
 class AddTarget extends Component {
     state = {
-        modal_form: false,
         status_option_checked: false,
         status_option_selected: '',
         status_options: [
@@ -43,11 +41,10 @@ class AddTarget extends Component {
     }
 
     handleClick = (e) => {
-        this.setState({
-            modal_form: true
-        });
+        this.props.toggleAppModal(true);
     }
 
+     // This will update the status radio options
     updateStatusChecked = (selected_value) => {
         // assign the status_options_copy in order to make changes to this.state.status_options
         let status_options_copy = this.state.status_options;
@@ -158,11 +155,16 @@ class AddTarget extends Component {
                 // if we have at least one form of data with a value increase counter by 1
                 data_filled_counter++;
 
-                // if we are at the final loop and we have at least one form of data filled
+                
             }
+            // if we are at the final loop and we have at least one form of data filled
 
             if (i === 9 && data_filled_counter !== 0) {
 
+                // If company percentage and performance are both empty strings
+                // or they're not empty strings then you can send data
+                // cannot submit data if values of percentage and performance are empty strings 
+                // or they both have values
                 if ((company_percentage === '' && company_performance === '') || (company_performance !== '' && company_percentage !== '')) {
 
                     // this will send the data submited to the parent component index.js
@@ -191,8 +193,8 @@ class AddTarget extends Component {
                         option.checked = false
                     });
             
+                    this.props.toggleAppModal(false);
                     this.setState({
-                        modal_form: false,
                         name: '',
                         website: '',
                         industry: '',
@@ -210,6 +212,8 @@ class AddTarget extends Component {
                         status_options: default_status_options
                     });
                 }
+                // create an else state that handles if performance and percentage are different
+                // example performance is a string and percentage is not
             }
         });
 
@@ -223,7 +227,7 @@ class AddTarget extends Component {
 
 
     render() {
-        let hideModal = () => this.setState({ modal_form: false });
+        let hideModal = () => this.props.toggleAppModal(false);
 
         return (
             <div className='float-left mt-3' id='addTargetContainer'>
@@ -237,7 +241,7 @@ class AddTarget extends Component {
                 {/* Form Modal */}
                 <Modal
                     size="lg"
-                    show={this.state.modal_form}
+                    show={this.props.showAppModal}
                     onHide={hideModal}
                     aria-labelledby="addTargetContainer"
                 >
