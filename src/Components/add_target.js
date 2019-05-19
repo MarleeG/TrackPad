@@ -179,23 +179,6 @@ class AddTarget extends Component {
                     Create new target
                 </Button>
 
-                {/* <Row>
-                    <Col xs={6}>
-                        <Toast onClose={handleClose} show={show} delay={3000} autohide>
-                            <Toast.Header>
-                                <strong className="mr-auto">Track Pad</strong>
-                                <small>{Date().getHours()}: {Date().getMinutes()}</small>
-                            </Toast.Header>
-                            <Toast.Body>
-                                Woohoo, you're reading this text in a Toast!
-                            </Toast.Body>
-                        </Toast>
-                    </Col>
-                    <Col xs={6}>
-                        <Button onClick={handleShow}>Show Toast</Button>
-                    </Col>
-                </Row> */}
-
                 {/* Form Modal */}
                 <Modal
                     size="lg"
