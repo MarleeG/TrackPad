@@ -1,9 +1,7 @@
 import React from 'react';
 import { ListGroup, Container, Row, Col } from 'react-bootstrap';
 
-const log = console.log;
-
-
+// Functional Component
 const DisplayTarget = (props) => {
     function handleDelete(index) {
         props.handleDelete(index)
