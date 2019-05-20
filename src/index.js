@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Container, Row, Col } from 'react-bootstrap';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast } from 'react-toastify';
 
 // Components
 import Header from './Components/header';
@@ -83,6 +85,7 @@ class App extends Component {
 
     defaultFormValues = () => {
 
+        // This function will set all form values back to its initial state
         let status_options_copy = this.state.status_options;
         status_options_copy.forEach((option) => {
             option.checked = false
@@ -134,6 +137,14 @@ class App extends Component {
         // update all_companies to updated data
         this.setState({
             all_companies: updated_data
+        }, () => {
+            toast('Deleted company successfully!', {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+            });
         });
     }
 
@@ -292,11 +303,33 @@ class App extends Component {
 
         companies[updateIndex] = company_edit;
 
-        this.setState({
-            showAppModal: false,
-            all_companies: companies,
-            submitText: 'Add'
-        });
+        if ((company_percentage === '' && company_performance === '') || (company_percentage !== "" && company_performance !== "")) {
+
+            this.setState({
+                all_companies: companies,
+                showAppModal: false,
+                submitText: 'Add',
+            }, () => {
+                toast('Update Successful', {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                });
+
+
+            });
+
+            
+            
+        }else if(company_percentage !== '' && company_performance === ''){
+            this.updateAlertMessage(true, 'Select a business performance');
+        }else if(company_percentage === "" && company_performance !== ""){
+            this.updateAlertMessage(true, 'Select a percentage');
+        }
+
+
     }
 
     render() {
@@ -357,7 +390,7 @@ class App extends Component {
                                 checkItem={(e, idx) => this.checkItem(e, idx)}
                                 updateAlertMessage={(bool, msg) => this.updateAlertMessage(bool, msg)}
                                 handleTargetUpdate={e => this.handleTargetUpdate(e)}
-                                defaultFormValues={() => this.defaultFormValues()}/>
+                                defaultFormValues={() => this.defaultFormValues()} />
                         </Col>
                     </Row>
 

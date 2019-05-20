@@ -1,16 +1,15 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 
-import '../index.css';
-
 //function based component
 const Header = () => {
-    // Font Styles 
+    // Header Styles 
     const TitleStyle = { fontFamily: 'Mitr', fontSize: '55px'};
     const QuoteStyle = {fontFamily: 'Cookie', fontSize: '20px'};
+    const HeaderStyle = {color: 'white', backgroundColor: '#343a40'}
 
     return (
-        <div className='mx-auto header mt-2'>
+        <div className='mx-auto mt-2' style={HeaderStyle}>
             <Container>
                 <Row>
                     <Col lg={12}>

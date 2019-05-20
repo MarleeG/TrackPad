@@ -7,10 +7,15 @@ import {
     Col,
     DropdownButton,
     Dropdown,
+    Row
 } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 
-
-
+const ToastStyle ={
+    color: '#343a40',
+    marginTop: '9%',
+    marginRight: '5.5%'
+}
 // class based component
 // Will allow you to create a new target and edit existing ones
 class AddTarget extends Component {
@@ -19,15 +24,6 @@ class AddTarget extends Component {
 
     handleClick = (e) => {
         this.props.toggleAppModal(true);
-    }
-
-    // Handles input change
-    handleChange = (e) => {
-        const { name, value } = e.target;
-
-        this.setState({
-            [name]: value
-        });
     }
 
     // This add the target you entered and display if at least one field is filled
@@ -107,12 +103,11 @@ class AddTarget extends Component {
                         // Defaults to form initial values
                         this.props.defaultFormValues()
                     }
-                    
-                    if(company_percentage === '' && company_performance !== ''){
-                        this.props.updateAlertMessage(true, 'Select a percentage');
-                    }
 
-                    if(company_percentage !== '' && company_performance === ''){
+                    // Checks if percentage or percentage have been selected
+                    if (company_percentage === '' && company_performance !== '') {
+                        this.props.updateAlertMessage(true, 'Select a percentage');
+                    }else if (company_percentage !== '' && company_performance === '') {
                         this.props.updateAlertMessage(true, 'Select a business performance');
                     }
                     // create an else state that handles if performance and percentage are different
@@ -134,12 +129,25 @@ class AddTarget extends Component {
         };
 
         return (
-            <div className='float-left mt-3' id='addTargetContainer'>
+            <div className='mt-3' id='addTargetContainer'>
                 {/* Add a new target button */}
                 <Button variant="dark" size="lg" onClick={() => this.handleClick()}>
                     <i className='plus icon'></i>
                     Create new target
                 </Button>
+
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnVisibilityChange
+                    draggable
+                    pauseOnHover
+                    style={ToastStyle}
+                />
 
                 {/* Form Modal */}
                 <Modal
