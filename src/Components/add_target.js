@@ -5,37 +5,16 @@ import {
     Modal,
     Form,
     Col,
-    Row,
     DropdownButton,
-    Dropdown
+    Dropdown,
 } from 'react-bootstrap';
 
-const log = console.log;
+
 
 // class based component
-// Will allow you to create a new target
+// Will allow you to create a new target and edit existing ones
 class AddTarget extends Component {
     state = {
-        // status_option_checked: this.props.status_option_checked,
-        // status_option_selected: this.props.status_option_selected,
-        // status_options: this.props.status_options,
-        // name: this.props.name,
-        // website: this.props.website,
-        // industry: this.props.industry,
-        // number: this.props.number,
-        // key_name: this.props.key_name,
-        // key_number: this.props.key_number,
-        // key_role: this.props.role,
-        // company_percentage: this.props.company_percentage,
-        // company_performance: this.props.company_performance,
-        // dropdown_selection: this.props.dropdown_selection,
-
-
-        // alert_message: '',
-        // show_alert_message: false,
-
-        // Key_Contact_List: [],
-        show: true
     }
 
     handleClick = (e) => {
@@ -49,8 +28,6 @@ class AddTarget extends Component {
         this.setState({
             [name]: value
         });
-
-
     }
 
     // This add the target you entered and display if at least one field is filled
@@ -58,8 +35,6 @@ class AddTarget extends Component {
         e.preventDefault();
 
         if (this.props.submitText === 'Add') {
-
-
 
             const {
                 name,
@@ -74,7 +49,7 @@ class AddTarget extends Component {
                 status_option_selected
             } = this.props;
 
-            // 
+            // assigned values of form to target_data
             const target_data = [
                 name,
                 website,
@@ -88,18 +63,16 @@ class AddTarget extends Component {
                 status_option_selected
             ];
 
-            // counts how much data 
+            // data counter
             let data_filled_counter = 0;
 
             target_data.forEach((data, i) => {
                 if (data !== '') {
                     // if we have at least one form of data with a value increase counter by 1
                     data_filled_counter++;
-
-
                 }
-                // if we are at the final loop and we have at least one form of data filled
 
+                // if we are at the final loop and we have at least one form of data filled
                 if (i === 9 && data_filled_counter !== 0) {
 
                     // If company percentage and performance are both empty strings
@@ -128,32 +101,19 @@ class AddTarget extends Component {
                             status: status_option_selected
                         });
 
-                        let default_status_options = this.props.status_options;
-
-                        default_status_options.forEach((option) => {
-                            option.checked = false
-                        });
 
                         this.props.toggleAppModal(false);
 
-                        // Create a function on index.js that defaults to original form values
-                        this.setState({
-                            name: '',
-                            website: '',
-                            industry: '',
-                            number: '',
-                            key_name: '',
-                            key_number: '',
-                            key_role: '',
-                            company_percentage: '',
-                            company_performance: '',
-                            dropdown_selection: '',
-                            alert_message: '',
-                            show_alert_message: false,
-                            status_option_checked: false,
-                            status_option_selected: '',
-                            status_options: default_status_options
-                        });
+                        // Defaults to form initial values
+                        this.props.defaultFormValues()
+                    }
+                    
+                    if(company_percentage === '' && company_performance !== ''){
+                        this.props.updateAlertMessage(true, 'Select a percentage');
+                    }
+
+                    if(company_percentage !== '' && company_performance === ''){
+                        this.props.updateAlertMessage(true, 'Select a business performance');
                     }
                     // create an else state that handles if performance and percentage are different
                     // example performance is a string and percentage is not
@@ -167,9 +127,11 @@ class AddTarget extends Component {
         }
     }
 
-
     render() {
-        let hideModal = () => this.props.toggleAppModal(false);
+        let hideModal = () => {
+            this.props.toggleAppModal(false);
+            this.props.defaultFormValues()
+        };
 
         return (
             <div className='float-left mt-3' id='addTargetContainer'>
@@ -192,6 +154,7 @@ class AddTarget extends Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+
                         {/* Form */}
                         <Form onSubmit={(e) => this.handleSubmit(e)}>
                             {/* Alert Message */}

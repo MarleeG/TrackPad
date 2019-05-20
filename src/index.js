@@ -7,48 +7,48 @@ import Header from './Components/header';
 import AddTarget from './Components/add_target';
 import DisplayTarget from './Components/display_target';
 
-const log = console.log;
+// const log = console.log;
 
-// React Component
+// App Component
 class App extends Component {
     state = {
         showAppModal: false,
         all_companies: [
             {
                 company_details: {
-                    name: "Fenty Beauty",
-                    industry: 'Beauty',
-                    number: '800-GET-SOME',
-                    website: 'https://fenty.com'
+                    name: "Candy Castle",
+                    industry: 'Food',
+                    number: '800-TRY-CNDY',
+                    website: 'https://candlecastle.com'
                 },
                 key_contact: {
-                    key_role: 'Lawyer',
-                    key_name: 'Olivia Benson',
+                    key_role: 'Owner',
+                    key_name: 'Leah Aire',
                     key_number: '561-768-8384'
                 },
                 performance: {
-                    percentage: '50%',
+                    percentage: '25%',
                     performance: 'Up'
                 },
-                status: 'approved'
+                status: 'pending'
             },
             {
                 company_details: {
-                    name: "Soda pop",
+                    name: "Poppington",
                     industry: 'Beverage',
-                    number: '800-GET-SOME',
-                    website: 'https://drink.com'
+                    number: '877-546-8790',
+                    website: 'https://Poppington.com'
                 },
                 key_contact: {
-                    key_role: 'Lawyer',
+                    key_role: 'CEO',
                     key_name: 'Olivia Arnold',
-                    key_number: '561-768-8384'
+                    key_number: '470-567-1257'
                 },
                 performance: {
-                    percentage: '75%',
+                    percentage: '25%',
                     performance: 'Down'
                 },
-                status: 'pending'
+                status: 'approved'
             },
         ],
         name: '',
@@ -81,11 +81,40 @@ class App extends Component {
         });
     }
 
+    defaultFormValues = () => {
+
+        let status_options_copy = this.state.status_options;
+        status_options_copy.forEach((option) => {
+            option.checked = false
+        });
+
+        this.setState({
+            name: '',
+            website: '',
+            number: '',
+            industry: '',
+            key_name: '',
+            key_number: '',
+            key_role: '',
+            company_performance: '',
+            company_percentage: '',
+            dropdown_selection: '',
+            status_option_checked: false,
+            status_option_selected: '',
+            status_options: status_options_copy,
+            alert_message: '',
+            show_alert_message: false,
+            submitText: 'Add',
+            updateIndex: undefined
+        });
+
+    }
+
     // This will add a target company to this.state.company_data
     addCompany = data => {
         this.setState({
             all_companies: [data, ...this.state.all_companies]
-        }, () => log(this.state.all_companies));
+        });
     }
 
     // This will delete the company data selected by the user
@@ -113,7 +142,7 @@ class App extends Component {
 
         this.setState({
             [name]: value
-        }, () => log(`${name}: ${value}`));
+        });
     }
 
 
@@ -140,7 +169,6 @@ class App extends Component {
 
     // This will only allow one radion option to be selected
     checkItem = (e, index) => {
-        log(index)
         let selected_value = this.state.status_options[index].status;
 
         // If all have a checked status of false then update status_option_checked to true
@@ -168,7 +196,6 @@ class App extends Component {
         status_options_copy.forEach(option => {
             // if the status matches the selected value then assign checked as true
             if (option.status === selected_value) {
-                // log(option.checked)
                 option.checked = true;
             } else {
                 option.checked = false;
@@ -176,7 +203,7 @@ class App extends Component {
         });
 
         // New value of status_options set
-        this.setState({ status_options: status_options_copy }, () => log(this.state.status_options))
+        this.setState({ status_options: status_options_copy })
     }
 
     updateAlertMessage = (bool, message) => {
@@ -188,7 +215,6 @@ class App extends Component {
 
     // Displays Modal with company/target selected by the user
     handleEditTargetClick = idx => {
-        log('Index: ', idx);
 
         // Destructure values of the selected company that wil be updated
         let {
@@ -229,21 +255,19 @@ class App extends Component {
     }
 
     handleTargetUpdate = () => {
-        log('updating...');
-
-        let {   
-                name, 
-                industry, 
-                number, 
-                website, 
-                key_role, 
-                key_name, 
-                key_number,
-                company_percentage,
-                company_performance,
-                status_option_selected,
-                updateIndex
-            } = this.state;
+        let {
+            name,
+            industry,
+            number,
+            website,
+            key_role,
+            key_name,
+            key_number,
+            company_percentage,
+            company_performance,
+            status_option_selected,
+            updateIndex
+        } = this.state;
 
         let company_edit = {
             company_details: {
@@ -264,38 +288,15 @@ class App extends Component {
             status: status_option_selected
         }
 
-        // log('status: ', status)
         let companies = this.state.all_companies;
-        
-        // let status_option_copy = this.state.status_options;
-
-        // status_option_copy.forEach(option => {
-        //     if (option.status === status) {
-        //         option.checked = true;
-        //         this.setState({
-        //             status_option_selected: option.status
-        //         });
-        //     } else {
-        //         option.checked = false;
-        //     }
-        // });
-
 
         companies[updateIndex] = company_edit;
-        // companies.forEach((company_data, i) => {
-        //     if(i === this.state.updateIndex){
-        //         company_data = company_edit;
-        //     }
-        // });
 
         this.setState({
             showAppModal: false,
-            all_companies: companies
-        })
-
-
-
-
+            all_companies: companies,
+            submitText: 'Add'
+        });
     }
 
     render() {
@@ -356,7 +357,7 @@ class App extends Component {
                                 checkItem={(e, idx) => this.checkItem(e, idx)}
                                 updateAlertMessage={(bool, msg) => this.updateAlertMessage(bool, msg)}
                                 handleTargetUpdate={e => this.handleTargetUpdate(e)}
-                            />
+                                defaultFormValues={() => this.defaultFormValues()}/>
                         </Col>
                     </Row>
 
