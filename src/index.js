@@ -9,7 +9,6 @@ import Header from './Components/header';
 import AddTarget from './Components/add_target';
 import DisplayTarget from './Components/display_target';
 
-// const log = console.log;
 
 // App Component
 class App extends Component {
@@ -156,6 +155,12 @@ class App extends Component {
         });
     }
 
+    setNewState = (name, value) => {
+        this.setState({
+            [name]: value
+        });
+    }
+
 
     // This will update which dropdown was selected to allow handleSelect to update the selected value for each drop down
     handleSelectClick = (x) => {
@@ -257,7 +262,7 @@ class App extends Component {
             key_role: key_role,
             key_name: key_name,
             key_number: key_number,
-            status: status,
+            status_option_selected: status,
             company_performance: performance,
             company_percentage: percentage,
             status_options: status_option_copy,
@@ -266,6 +271,8 @@ class App extends Component {
     }
 
     handleTargetUpdate = () => {
+        // deconstruct current values from state to then update then upon update click
+
         let {
             name,
             industry,
@@ -280,6 +287,9 @@ class App extends Component {
             updateIndex
         } = this.state;
 
+
+
+        // Format data to insert it back to this.state.all_companies
         let company_edit = {
             company_details: {
                 name: name,
@@ -303,12 +313,14 @@ class App extends Component {
 
         companies[updateIndex] = company_edit;
 
-        if ((company_percentage === '' && company_performance === '') || (company_percentage !== "" && company_performance !== "")) {
-
+        // If company percentage and performance are both empty strings
+        // or they're not empty strings then you can update data
+        // cannot update data if values of percentage and performance are not similiar
+        // One cannot be an empty string if the other isn't an empty string when updating 
+        if ((company_percentage === '' && company_performance === '') || (company_percentage !== '' && company_performance !== '')) {
             this.setState({
                 all_companies: companies,
                 showAppModal: false,
-                submitText: 'Add',
             }, () => {
                 toast('Update Successful', {
                     position: "top-right",
@@ -317,19 +329,15 @@ class App extends Component {
                     closeOnClick: true,
                     pauseOnHover: true,
                 });
-
-
             });
 
-            
-            
-        }else if(company_percentage !== '' && company_performance === ''){
+
+
+        } else if (company_percentage !== '' && company_performance === '') {
             this.updateAlertMessage(true, 'Select a business performance');
-        }else if(company_percentage === "" && company_performance !== ""){
+        } else if (company_percentage === "" && company_performance !== "") {
             this.updateAlertMessage(true, 'Select a percentage');
         }
-
-
     }
 
     render() {
@@ -390,7 +398,10 @@ class App extends Component {
                                 checkItem={(e, idx) => this.checkItem(e, idx)}
                                 updateAlertMessage={(bool, msg) => this.updateAlertMessage(bool, msg)}
                                 handleTargetUpdate={e => this.handleTargetUpdate(e)}
-                                defaultFormValues={() => this.defaultFormValues()} />
+                                defaultFormValues={() => this.defaultFormValues()}
+                                setNewState={(name, value) => this.setNewState(name, value)}
+                            />
+
                         </Col>
                     </Row>
 

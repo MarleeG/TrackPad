@@ -3,10 +3,6 @@ import { ListGroup, Container, Row, Col } from 'react-bootstrap';
 
 // Functional Component
 const DisplayTarget = (props) => {
-    function handleDelete(index) {
-        props.handleDelete(index)
-    }
-
     return (
         <div className='mx-auto mt-5'>
             <ListGroup as="ul">
@@ -30,6 +26,7 @@ const DisplayTarget = (props) => {
                             },
                             status
                         } = target;
+
                         return (
                             <ListGroup.Item as="li" action key={idx}>
                                 <Container>
@@ -71,7 +68,7 @@ const DisplayTarget = (props) => {
 
                                         {/* Edit and Delete Buttons */}
                                         <Col lg={2} className='text-center'>
-                                            <i className="trash icon large mr-4" onClick={() => handleDelete(idx)}></i>
+                                            <i className="trash icon large mr-4" onClick={() => props.handleDelete(idx)}></i>
                                             <i className="edit icon large" 
                                                 onClick={() => {
                                                 props.toggleAppModal(true)
