@@ -12,11 +12,13 @@ const Header = () => {
         <div className='mx-auto mt-2' style={HeaderStyle}>
             <Container>
                 <Row>
+                    {/* Title */}
                     <Col lg={12}>
                         <h1 className='text-center mt-2' style={TitleStyle}>Track Pad</h1>
                     </Col>
                 </Row>
-                <Row >
+                <Row>
+                    {/* Functionality Quote */}
                     <Col lg={12}>
                         <p className='text-center mb-1' style={QuoteStyle}>Tracking &#38; analyzing made simple!</p>
                     </Col>
