@@ -76,15 +76,15 @@ class App extends Component {
         updateIndex: undefined
     }
 
+    // This function will allow the modal to be toggled with
     toggleAppModal = (bool) => {
         this.setState({
             showAppModal: bool
         });
     }
 
+    // This function will set all form values back to its initial state
     defaultFormValues = () => {
-
-        // This function will set all form values back to its initial state
         let status_options_copy = this.state.status_options;
         status_options_copy.forEach((option) => {
             option.checked = false
@@ -109,7 +109,6 @@ class App extends Component {
             submitText: 'Add',
             updateIndex: undefined
         });
-
     }
 
     // This will add a target company to this.state.company_data
@@ -147,6 +146,7 @@ class App extends Component {
         });
     }
 
+    // This will update the state of the inputs on form inside the modal
     handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -155,6 +155,7 @@ class App extends Component {
         });
     }
 
+    // This allows any property and state to be updated/changed
     setNewState = (name, value) => {
         this.setState({
             [name]: value
@@ -169,7 +170,6 @@ class App extends Component {
         });
     }
 
-
     // Updates dropdown menu selecttion
     handleSelect = (e) => {
         if (this.state.dropdown_selection === 'company_performance') {
@@ -183,7 +183,7 @@ class App extends Component {
         }
     }
 
-    // This will only allow one radion option to be selected
+    // This will only allow one radio option to be selected
     checkItem = (e, index) => {
         let selected_value = this.state.status_options[index].status;
 
@@ -222,6 +222,8 @@ class App extends Component {
         this.setState({ status_options: status_options_copy })
     }
 
+    // This allows for the alert message in the form inside the modal to be shown
+    // if needed
     updateAlertMessage = (bool, message) => {
         this.setState({
             show_alert_message: bool,
@@ -270,9 +272,10 @@ class App extends Component {
         });
     }
 
+    // This function will allow the specific company/target selected by the user to be updated 
+    // and displayed back in its original location in the list of companies shown
     handleTargetUpdate = () => {
         // deconstruct current values from state to then update then upon update click
-
         let {
             name,
             industry,
@@ -286,9 +289,7 @@ class App extends Component {
             status_option_selected,
             updateIndex
         } = this.state;
-
-
-
+        
         // Format data to insert it back to this.state.all_companies
         let company_edit = {
             company_details: {
@@ -311,6 +312,7 @@ class App extends Component {
 
         let companies = this.state.all_companies;
 
+        // place the editted company/taget back in its original index in the array
         companies[updateIndex] = company_edit;
 
         // If company percentage and performance are both empty strings
@@ -322,6 +324,7 @@ class App extends Component {
                 all_companies: companies,
                 showAppModal: false,
             }, () => {
+                // Displays toast notification once update is complete
                 toast('Update Successful', {
                     position: "top-right",
                     autoClose: 4000,
@@ -331,8 +334,8 @@ class App extends Component {
                 });
             });
 
-
-
+        // Checks if the percentage and performance are two different values
+        // If they are show the alert message so they enter a value for both performance or percentage 
         } else if (company_percentage !== '' && company_performance === '') {
             this.updateAlertMessage(true, 'Select a business performance');
         } else if (company_percentage === "" && company_performance !== "") {
@@ -369,7 +372,7 @@ class App extends Component {
                         </Col>
                     </Row>
 
-                    {/*AddTarget Component displays here  */}
+                    {/*AddTarget Component*/}
                     <Row>
                         <Col>
                             <AddTarget
@@ -421,7 +424,6 @@ class App extends Component {
         )
     }
 }
-
 
 // Render App inside div with an id of root
 ReactDOM.render(<App />, document.getElementById('root'));

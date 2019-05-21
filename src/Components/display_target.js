@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, Container, Row, Col } from 'react-bootstrap';
+import { ListGroup, Container, Row, Col, Button } from 'react-bootstrap';
 
 // Functional Component
 const DisplayTarget = (props) => {
@@ -31,6 +31,7 @@ const DisplayTarget = (props) => {
                             <ListGroup.Item as="li" action key={idx}>
                                 <Container>
                                     <Row>
+                                        {/* Company Details Column */}
                                         <Col lg={3}>
                                             <h3>Company Details</h3>
                                             <h5>Name: {name}</h5>
@@ -38,27 +39,37 @@ const DisplayTarget = (props) => {
                                             <h5>Number: {number}</h5>
                                             <h5>Website: {website}</h5>
                                         </Col>
+
+                                        {/* Key Contact Column */}
                                         <Col lg={3}>
                                             <h3>Key Contact</h3>
                                             <h5>Role: {key_role}</h5>
                                             <h5>Name: {key_name}</h5>
                                             <h5>Number: {key_number}</h5>
                                         </Col>
+
+                                        {/* Performance Column */}
                                         <Col lg={2}>
                                             <h3>Performance</h3>
                                             <h5>
-                                                {performance === 'Up' && 
-                                                    <i className="long arrow alternate up icon large"></i>
-                                                    } 
-
-                                                {performance === 'Down' &&
-                                                    <i className="long arrow alternate down icon large"></i>
-                                                } {performance !== '' && 'by'} {percentage}
-
-                                                {/* If there isn't a performance, then display Unknown */}
+                                                {/* if performance equals Up then show the Semantic UI up arrow */}
                                                 {
-                                                    performance === '' && <p>Unknown</p>
+                                                    (performance === 'Up' && percentage !== '') ?
+                                                    <i className="long arrow alternate up icon large"></i>
+                                                    :null
+                                                } 
+
+                                                {/* if performance equals Down then show the Semantic UI down arrow */}
+                                                {(performance === 'Down' && percentage !== '')?
+                                                    <i className="long arrow alternate down icon large"></i>
+                                                    :null
+                                                } {(performance !== '' && percentage !== '')? 'by' : null} {percentage}
+
+                                                {/* If there isn't a performance or percentage, then display Unknown */}
+                                                {   
+                                                    (performance === '' ||  percentage === '') ? <p>Unknown</p>: null
                                                 }
+
                                             </h5>
                                         </Col>
                                         <Col lg={2}>
@@ -66,15 +77,23 @@ const DisplayTarget = (props) => {
                                             <h5>Status: {status}</h5>
                                         </Col>
 
-                                        {/* Edit and Delete Buttons */}
+                                        {/* Edit and Delete Action Buttons */}
+                                        {/* Revision Column */}
                                         <Col lg={2} className='text-center'>
-                                            <i className="trash icon large mr-4" onClick={() => props.handleDelete(idx)}></i>
-                                            <i className="edit icon large" 
-                                                onClick={() => {
+                                            <h3>Revision?</h3>
+                                            <Button variant="dark" size='sm' onClick={() => props.handleDelete(idx)}>
+                                                {/* Semantic UI trash icon */}
+                                                <i className="trash icon large mr-5 text-center mx-auto"></i>
+                                            </Button>
+                                            {' '}
+                                            <Button variant="dark" size='sm' onClick={() => {
                                                 props.toggleAppModal(true)
                                                 props.handleEditTargetClick(idx)
                                                 }
-                                            }></i>
+                                            }>
+                                                {/* Semantic UI edit icon */}
+                                                <i className="edit icon large mx-auto"></i>
+                                            </Button>
                                         </Col>
                                     </Row>
                                 </Container>
@@ -83,9 +102,6 @@ const DisplayTarget = (props) => {
                     }) :
                     null
                 }
-
-
-
             </ListGroup>
         </div>
     )
