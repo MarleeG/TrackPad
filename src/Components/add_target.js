@@ -7,11 +7,10 @@ import {
     Col,
     DropdownButton,
     Dropdown,
-    Row
 } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
-const ToastStyle ={
+const ToastStyle = {
     color: '#343a40',
     marginTop: '9%',
     marginRight: '5.5%'
@@ -19,45 +18,44 @@ const ToastStyle ={
 // class based component
 // Will allow you to create a new target and edit existing ones
 class AddTarget extends Component {
-    state = {
-    }
-
-    handleClick = (e) => {
+    handleClick = () => {
         this.props.toggleAppModal(true);
+        this.props.defaultFormValues()
     }
 
     // This add the target you entered and display if at least one field is filled
     handleSubmit = (e) => {
         e.preventDefault();
+        const {
+            name,
+            website,
+            industry,
+            number,
+            key_name,
+            key_number,
+            key_role,
+            company_percentage,
+            company_performance,
+            status_option_selected,
+        } = this.props;
+
+
+        // assigned values of form to target_data
+        const target_data = [
+            name,
+            website,
+            industry,
+            number,
+            key_name,
+            key_number,
+            key_role,
+            company_percentage,
+            company_performance,
+            status_option_selected
+        ];
+
 
         if (this.props.submitText === 'Add') {
-
-            const {
-                name,
-                website,
-                industry,
-                number,
-                key_name,
-                key_number,
-                key_role,
-                company_percentage,
-                company_performance,
-                status_option_selected
-            } = this.props;
-
-            // assigned values of form to target_data
-            const target_data = [
-                name,
-                website,
-                industry,
-                number,
-                key_name,
-                key_number,
-                key_role,
-                company_percentage,
-                company_performance,
-                status_option_selected
-            ];
 
             // data counter
             let data_filled_counter = 0;
@@ -102,12 +100,14 @@ class AddTarget extends Component {
 
                         // Defaults to form initial values
                         this.props.defaultFormValues()
+
+
                     }
 
                     // Checks if percentage or percentage have been selected
                     if (company_percentage === '' && company_performance !== '') {
                         this.props.updateAlertMessage(true, 'Select a percentage');
-                    }else if (company_percentage !== '' && company_performance === '') {
+                    } else if (company_percentage !== '' && company_performance === '') {
                         this.props.updateAlertMessage(true, 'Select a business performance');
                     }
                     // create an else state that handles if performance and percentage are different
@@ -119,7 +119,25 @@ class AddTarget extends Component {
                 this.props.updateAlertMessage(true, 'Please enter a value for atleast one field')
             }
 
-        }
+        } 
+        // else if (submitText === 'Update') {
+
+        //      // Checks if percentage or percentage have been selected
+        //     if (company_percentage === '' && company_performance !== '') {
+        //         this.props.updateAlertMessage(true, 'Select a percentage');
+        //     } else if (company_percentage !== '' && company_performance === '') {
+        //         this.props.updateAlertMessage(true, 'Select a business performance');
+        //     }
+
+
+        //     this.props.setNewState('submitText', 'Add');
+        //     // Defaults to form initial values
+        //     this.props.defaultFormValues();
+        //     this.props.toggleAppModal(false);
+
+        // }
+
+        this.props.setNewState('submitText', 'Add');
     }
 
     render() {
@@ -127,6 +145,8 @@ class AddTarget extends Component {
             this.props.toggleAppModal(false);
             this.props.defaultFormValues()
         };
+
+        
 
         return (
             <div className='mt-3' id='addTargetContainer'>
