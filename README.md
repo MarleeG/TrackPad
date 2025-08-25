@@ -15,4 +15,4 @@ A simple method to track and analyze potential target companies!
 
 
 ## Deployed App
-* [TrackPad](https://trackpad.herokuapp.com) - App  
+* [TrackPad](https://marleeg.github.io/TrackPad) - App
